@@ -3,4 +3,4 @@ sudo: false
 
 script:
     - ./generate.sh example/config.sh
-    - [ -z "$(git status --porcelain example)" ]
+    - '[ -z "$(git status --porcelain example)" ]'

@@ -9,6 +9,7 @@ $ docker run -d \
 	-p 80:80 \
 	--dns 172.17.42.1 \
 	-v /path/to/target:/etc/nginx/conf.d:ro \
+	-v /path/to/static/resources/referenced/in/config:/static:ro \
 	--restart always \
 	nginx
 $ sleep 1 # to give it a moment to come up

@@ -5,12 +5,13 @@ config="$(dirname "$BASH_SOURCE")/config.sh"
 if [ "$1" ]; then
 	config="$1"
 fi
-target="$(dirname "$config")/default.conf"
+targetDir="$(dirname "$config")"
 if [ "$2" ]; then
-	target="$2"
+	targetDir="$2"
 fi
 echo "Loading $config ..."
 source "$config"
+target="$targetDir/default.conf"
 
 declare -A allHostsA=()
 for serverName in "${!redirects[@]}" "${!forcedProtos[@]}" "${!simpleProxies[@]}" "${!simpleStatics[@]}"; do
@@ -91,3 +92,6 @@ EOB
 }
 EOB
 done
+
+echo "Copying *.include to $targetDir/"
+cp -v "$(dirname "$BASH_SOURCE")"/*.include "$targetDir"

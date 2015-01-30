@@ -7,6 +7,7 @@ $ ./generate.sh /path/to/target/config.sh
 $ docker run -d \
 	--name nginx \
 	-p 80:80 \
+	--dns 172.17.42.1 \
 	-v /path/to/target:/etc/nginx/conf.d:ro \
 	--restart always \
 	nginx

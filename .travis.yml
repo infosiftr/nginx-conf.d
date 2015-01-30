@@ -1,0 +1,5 @@
+language: bash
+
+script:
+    - ./generate.sh example/config.sh
+    - [ -z "$(git status --porcelain example)" ]

@@ -1,0 +1,6 @@
+if ($force_proto = "") {
+	set $force_proto $proto;
+}
+if ($proto != $force_proto) {
+	return 301 $force_proto://$server_name$request_uri;
+}

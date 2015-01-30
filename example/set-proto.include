@@ -1,0 +1,4 @@
+set $proto $http_x_forwarded_proto;
+if ($proto = "") {
+	set $proto $scheme;
+}

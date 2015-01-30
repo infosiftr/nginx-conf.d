@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+# usage: $0 path/to/config.sh [target/path/]
+
 config="$(dirname "$BASH_SOURCE")/config.sh"
 if [ "$1" ]; then
 	config="$1"

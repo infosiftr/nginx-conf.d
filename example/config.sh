@@ -9,7 +9,7 @@ defaultServer='example.com' # explicit first "server { }"
 listens=(
 	# http://nginx.org/en/docs/http/ngx_http_core_module.html#listen
 	80
-	'443 ssl http2 spdy'
+	'443 ssl http2'
 )
 resolvers=(
 	# http://nginx.org/en/docs/http/ngx_http_core_module.html#resolver

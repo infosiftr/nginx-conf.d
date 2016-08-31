@@ -6,9 +6,17 @@ set -e
 
 defaultServer='example.com' # explicit first "server { }"
 
-listens=( 80 '443 ssl' ) # http://nginx.org/en/docs/http/ngx_http_core_module.html#listen
-resolvers=( 172.17.42.1 ) # http://nginx.org/en/docs/http/ngx_http_core_module.html#resolver
-#resolvers=( 8.8.8.8 8.8.4.4 )
+listens=(
+	# http://nginx.org/en/docs/http/ngx_http_core_module.html#listen
+	80
+	'443 ssl http2 spdy'
+)
+resolvers=(
+	# http://nginx.org/en/docs/http/ngx_http_core_module.html#resolver
+	172.17.42.1
+	#8.8.8.8
+	#8.8.4.4
+)
 
 declare -A redirects=(
 	[www.example.com]='example.com'
@@ -36,4 +44,10 @@ declare -A simpleProxies=(
 
 declare -A simpleStatics=(
 	[public.example.com]='/static/public'
+)
+
+declare -A sslCerts=(
+	# http://nginx.org/en/docs/http/configuring_https_servers.html#single_http_https_server
+	[public.example.com]='/path/to/somecert.pem /path/to/somecert.key'
+	[other.example.com]='/path/to/othercert.pem /path/to/othercert.key'
 )

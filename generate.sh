@@ -16,7 +16,7 @@ source "$config"
 target="$targetDir/default.conf"
 
 declare -A allHostsA=()
-for serverName in "${!redirects[@]}" "${!forcedProtos[@]}" "${!simpleProxies[@]}" "${!simpleStatics[@]}"; do
+for serverName in "${!redirects[@]}" "${!forcedProtos[@]}" "${!simpleProxies[@]}" "${!simpleStatics[@]}" "${!sslCerts[@]}"; do
 	allHostsA[$serverName]=1
 done
 unset allHostsA[$defaultServer]
@@ -33,6 +33,7 @@ for resolver in "${resolvers[@]}"; do
 done
 
 for serverName in "${allHosts[@]}"; do
+	sslCert="${sslCerts[$serverName]}"
 	redirectTo="${redirects[$serverName]}"
 	doForceProto="${forcedProtos[$serverName]}"
 	proxyTo="${simpleProxies[$serverName]}"
@@ -46,6 +47,17 @@ EOB
 	listen $listen;
 EOB
 	done
+	if [ "$sslCert" ]; then
+		ssl=( $sslCert ) # split on whitespace
+		cert="${ssl[0]}"
+		key="${ssl[1]}"
+		cat >> "$target" <<EOB
+
+	ssl_certificate $cert;
+	ssl_certificate_key $key;
+	include conf.d/ssl.include;
+EOB
+	fi
 	cat >> "$target" <<EOB
 
 	server_name $serverName;

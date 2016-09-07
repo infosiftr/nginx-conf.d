@@ -86,6 +86,7 @@ EOB
 		root $staticFiles;
 		index index.html index.htm index;
 		try_files \$uri \$uri/ \$uri.html =404;
+		add_header Cache-Control "public";
 	}
 EOB
 	fi

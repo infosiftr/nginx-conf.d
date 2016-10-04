@@ -2,5 +2,8 @@ if ($force_proto = "") {
 	set $force_proto $proto;
 }
 if ($proto != $force_proto) {
-	return 301 $force_proto://$server_name$request_uri;
+	# stop CloudFlare from caching "http://example.com/path" redirect as the response for "https://example.com/path" (thus looping)
+	add_header Cache-Control "no-cache";
+
+	return 302 $force_proto://$server_name$request_uri;
 }

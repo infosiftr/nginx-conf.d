@@ -62,12 +62,15 @@ EOB
 
 	server_name $serverName;
 	include conf.d/set-proto.include;
+
+	location / {
+		# start a default "location" block to allow for "add_header", etc.
 EOB
 	if [ "$doForceProto" ]; then
 		cat >> "$target" <<EOB
 
-	set \$force_proto "$doForceProto";
-	include conf.d/force-proto.include;
+		set \$force_proto "$doForceProto";
+		include conf.d/force-proto.include;
 EOB
 	fi
 
@@ -75,35 +78,32 @@ EOB
 		redirectTo='$proto://'"$redirectTo"'$request_uri' # TODO decide if this should support "$redirectTo" already having '$' in it somewhere, and thus not doing this prepend/append
 		cat >> "$target" <<EOB
 
-	return 301 $redirectTo;
+		return 301 $redirectTo;
 EOB
 	fi
 
 	if [ "$staticFiles" ]; then
 		cat >> "$target" <<EOB
 
-	location / {
 		root $staticFiles;
 		index index.html index.htm index;
 		try_files \$uri \$uri/ \$uri.html =404;
 		add_header Cache-Control "public";
-	}
 EOB
 	fi
 
 	if [ "$proxyTo" ]; then
 		cat >> "$target" <<EOB
 
-	# let the proxied server handle whether this "body" is too large
-	client_max_body_size 0;
+		# let the proxied server handle whether this "body" is too large
+		client_max_body_size 0;
 
-	location / {
 		proxy_pass $proxyTo;
 		include conf.d/proxy-pass.include;
-	}
 EOB
 	fi
 	cat >> "$target" <<EOB
+	}
 }
 EOB
 done

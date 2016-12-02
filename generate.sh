@@ -3,6 +3,11 @@ set -e
 
 # usage: $0 path/to/config.sh [target/path/]
 
+# default config
+defaultServer='example.com'
+declare -a listens=( 80 ) resolvers=()
+declare -A redirects=() forcedProtos=() simpleProxies=() simpleStatics=() sslCerts=()
+
 config="$(dirname "$BASH_SOURCE")/config.sh"
 if [ "$1" ]; then
 	config="$1"

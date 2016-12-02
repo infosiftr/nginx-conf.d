@@ -32,6 +32,8 @@ declare -A forcedProtos=(
 	[bugzilla.example.com]='https'
 	[munin.example.com]='https'
 	[public.example.com]='http'
+
+	[letsencrypt.example.com]='https'
 )
 
 declare -A simpleProxies=(
@@ -50,4 +52,17 @@ declare -A sslCerts=(
 	# http://nginx.org/en/docs/http/configuring_https_servers.html#single_http_https_server
 	[public.example.com]='/path/to/somecert.pem /path/to/somecert.key'
 	[other.example.com]='/path/to/othercert.pem /path/to/othercert.key'
+
+	[letsencrypt.example.com]='/path/to/letsencrypt/cert.pem /path/to/letsencrypt/cert.key'
+)
+
+declare -A extraConfigs=(
+	[letsencrypt.example.com]='
+	location ~ /.well-known {
+		root /static/letsencrypt-webroot/.well-known;
+		index index.html index.htm index;
+		try_files $uri $uri/ $uri.html =404;
+		add_header Cache-Control "no-cache";
+	}
+'
 )

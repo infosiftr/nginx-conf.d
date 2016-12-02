@@ -6,7 +6,7 @@ set -e
 # default config
 defaultServer='example.com'
 declare -a listens=( 80 ) resolvers=()
-declare -A redirects=() forcedProtos=() simpleProxies=() simpleStatics=() sslCerts=()
+declare -A redirects=() forcedProtos=() simpleProxies=() simpleStatics=() sslCerts=() extraConfigs=()
 
 config="$(dirname "$BASH_SOURCE")/config.sh"
 if [ "$1" ]; then
@@ -43,6 +43,7 @@ for serverName in "${allHosts[@]}"; do
 	doForceProto="${forcedProtos[$serverName]}"
 	proxyTo="${simpleProxies[$serverName]}"
 	staticFiles="${simpleStatics[$serverName]}"
+	extraConfig="${extraConfigs[$serverName]}"
 	cat >> "$target" <<EOB
 
 server {
@@ -109,6 +110,16 @@ EOB
 	fi
 	cat >> "$target" <<EOB
 	}
+EOB
+	if [ "$extraConfig" ]; then
+		extraConfig="${extraConfig#$'\n'}"
+		extraConfig="${extraConfig%$'\n'}"
+		{
+			echo
+			echo "$extraConfig"
+		} >> "$target"
+	fi
+	cat >> "$target" <<EOB
 }
 EOB
 done

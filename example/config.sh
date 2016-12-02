@@ -53,7 +53,7 @@ declare -A sslCerts=(
 	[public.example.com]='/path/to/somecert.pem /path/to/somecert.key'
 	[other.example.com]='/path/to/othercert.pem /path/to/othercert.key'
 
-	[letsencrypt.example.com]='/path/to/letsencrypt/cert.pem /path/to/letsencrypt/cert.key'
+	[letsencrypt.example.com]='/etc/letsencrypt/live/letsencrypt.example.com/fullchain.pem /etc/letsencrypt/live/letsencrypt.example.com/privkey.pem'
 )
 
 declare -A extraConfigs=(

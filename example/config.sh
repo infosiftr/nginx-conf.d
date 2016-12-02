@@ -59,7 +59,7 @@ declare -A sslCerts=(
 declare -A extraConfigs=(
 	[letsencrypt.example.com]='
 	location ~ /.well-known {
-		root /static/letsencrypt-webroot/.well-known;
+		root /static/letsencrypt-webroot;
 		index index.html index.htm index;
 		try_files $uri $uri/ $uri.html =404;
 		add_header Cache-Control "no-cache";

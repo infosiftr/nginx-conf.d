@@ -49,6 +49,14 @@ for serverName in "${allHosts[@]}"; do
 server {
 EOB
 	for listen in "${listens[@]}"; do
+		if [[ "$listen" == *ssl* ]]; then
+			# ignore "ssl" enabled listen directives unless we have corresponding SSL configuration
+			# otherwise, we get:
+			#   [error] 6#6: *13 no "ssl_certificate" is defined in server listening on SSL port while SSL handshaking, client: x.x.x.x, server: 0.0.0.0:443
+			if [ -z "$sslCert" ]; then
+				continue
+			fi
+		fi
 		cat >> "$target" <<EOB
 	listen $listen;
 EOB

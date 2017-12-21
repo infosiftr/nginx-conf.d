@@ -8,9 +8,12 @@ defaultServer='example.com'
 declare -a listens=( 80 ) resolvers=()
 declare -A redirects=() forcedProtos=() simpleProxies=() simpleStatics=() sslCerts=() extraConfigs=()
 
-config="$(dirname "$BASH_SOURCE")/config.sh"
+config="$(dirname "$BASH_SOURCE")"
 if [ "$1" ]; then
 	config="$1"
+fi
+if [ -d "$config" ]; then
+	config="$config/config.sh"
 fi
 targetDir="$(dirname "$config")"
 if [ "$2" ]; then
@@ -25,7 +28,12 @@ for serverName in "${!redirects[@]}" "${!forcedProtos[@]}" "${!simpleProxies[@]}
 	allHostsA[$serverName]=1
 done
 unset allHostsA[$defaultServer]
-allHosts=( "$defaultServer" "${!allHostsA[@]}" )
+
+allHosts=( "${!allHostsA[@]}" )
+IFS=$'\n'
+allHosts=( $(echo "${allHosts[@]}" | xargs -n1 | sort) )
+unset IFS
+allHosts=( "$defaultServer" "${allHosts[@]}" )
 
 echo "Generating into $target ..."
 cat > "$target" <<EOH

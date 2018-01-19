@@ -41,9 +41,9 @@ cat > "$target" <<EOH
 
 EOH
 
-for resolver in "${resolvers[@]}"; do
-	echo "resolver $resolver;" >> "$target"
-done
+if [ "${#resolvers[@]}" -gt 0 ]; then
+	echo "resolver ${resolvers[*]};" >> "$target"
+fi
 
 for serverName in "${allHosts[@]}"; do
 	sslCert="${sslCerts[$serverName]}"

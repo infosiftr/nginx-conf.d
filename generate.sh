@@ -120,7 +120,9 @@ EOB
 		# let the proxied server handle whether this "body" is too large
 		client_max_body_size 0;
 
-		proxy_pass $proxyTo;
+		# use a variable so NGINX is forced to resolve this at request time instead of at startup
+		set \$proxy_to $proxyTo;
+		proxy_pass \$proxy_to;
 		include conf.d/proxy-pass.include;
 EOB
 	fi

@@ -13,7 +13,7 @@ if [ "$1" ]; then
 	config="$1"
 fi
 if [ -d "$config" ]; then
-	config="$config/config.sh"
+	config="${config%/}/config.sh"
 fi
 targetDir="$(dirname "$config")"
 if [ "$2" ]; then
